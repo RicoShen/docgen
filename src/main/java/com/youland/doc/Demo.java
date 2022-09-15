@@ -32,6 +32,7 @@ public class Demo {
       try {
           ClassPathResource file = new ClassPathResource("demo.docx");
           XWPFDocument doc = new XWPFDocument(file.getInputStream());
+          doc.getTables();
           for (XWPFParagraph p: doc.getParagraphs()) {
               List<XWPFRun> runs = p.getRuns();
               if (runs != null) {
