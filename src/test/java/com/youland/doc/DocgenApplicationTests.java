@@ -1,6 +1,8 @@
 package com.youland.doc;
 
+import org.apache.poi.wp.usermodel.Paragraph;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -78,6 +80,39 @@ class DocgenApplicationTests {
             // 22,500.00
             // 1,695.00
             doc.write(new FileOutputStream("Loan_Documents_replace.docx"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void replaceFooter(){
+        try {
+            ClassPathResource file = new ClassPathResource("Loan_Documents.docx");
+            XWPFDocument doc = new XWPFDocument(file.getInputStream());
+            for (XWPFFooter footer : doc.getFooterList()) {
+                for (XWPFParagraph p : footer.getParagraphs()) {
+                    List<XWPFRun> runs = p.getRuns();
+                    if (runs != null) {
+                        for (XWPFRun r : runs) {
+                            String text = r.getText(0);
+                            System.out.println("footer text: = " + text);
+                            if (text != null && text.contains("#Loan_ID#")) {
+                                text = text.replace("#Loan_ID#", "20220915KL");
+                                r.setText(text, 0);
+                            }else if (text != null && text.contains("#Property_Address#")){
+                                text = text.replace("#Property_Address#", "37 Country Club Drive, Hayward, CA 94542");
+                                r.setText(text,0);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 22,500.00
+            // 1,695.00
+            doc.write(new FileOutputStream("Loan_Documents_replace_footer.docx"));
 
         } catch (IOException e) {
             e.printStackTrace();
