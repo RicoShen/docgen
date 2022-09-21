@@ -19,6 +19,7 @@ dependencies {
     implementation 'org.apache.poi:poi-examples:5.2.2'
     implementation 'fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.pdf-gae:2.0.3'
     implementation 'com.deepoove:poi-tl:1.12.0'
+    implementation 'org.apache.xmlgraphics:fop:2.7'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

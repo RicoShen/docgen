@@ -1,8 +1,15 @@
 package com.youland.doc;
 
 import com.deepoove.poi.XWPFTemplate;
+import com.lowagie.text.Document;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfImportedPage;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfWriter;
 import fr.opensagres.poi.xwpf.converter.pdf.PdfConverter;
 import fr.opensagres.poi.xwpf.converter.pdf.PdfOptions;
+import org.apache.fop.apps.Fop;
+import org.apache.fop.apps.FopFactory;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFFooter;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -10,13 +17,18 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.xmlgraphics.util.MimeConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
+import org.xml.sax.SAXException;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -159,6 +171,59 @@ class DocgenApplicationTests {
       PdfConverter.getInstance().convert(doc, outPDF, options);
 
     } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  void wordToPdf2() {
+    try {
+      ByteArrayOutputStream fopout = new ByteArrayOutputStream();
+      // out
+      OutputStream outfile = new FileOutputStream("docs/loan_documents.pdf");
+
+      //input
+      ClassPathResource file = new ClassPathResource("Loan_Documents.docx");
+
+      FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
+      Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, fopout);
+
+      Transformer transformer = TransformerFactory.newInstance()
+              .newTransformer(new StreamSource(file.getInputStream()));
+
+      transformer.transform(new StreamSource(file.getInputStream()),
+              new SAXResult(fop.getDefaultHandler()));
+
+      // reader
+      PdfReader reader = new PdfReader(file.getInputStream().readAllBytes());
+      int n = reader.getNumberOfPages();
+      Document document = new Document(reader.getPageSizeWithRotation(1));
+
+      PdfWriter writer = PdfWriter.getInstance(document, outfile);
+      writer.setEncryption(PdfWriter.STRENGTH40BITS, "pdf", null,
+              PdfWriter.AllowCopy);
+      document.open();
+      PdfContentByte cb = writer.getDirectContent();
+      PdfImportedPage page;
+      int rotation;
+      int i = 0;
+      while (i < n) {
+        i++;
+        document.setPageSize(reader.getPageSizeWithRotation(i));
+        document.newPage();
+        page = writer.getImportedPage(reader, i);
+        rotation = reader.getPageRotation(i);
+        if (rotation == 90 || rotation == 270) {
+          cb.addTemplate(page, 0, -1f, 1f, 0, 0,
+                  reader.getPageSizeWithRotation(i).getHeight());
+        } else {
+          cb.addTemplate(page, 1f, 0, 0, 1f, 0, 0);
+        }
+        System.out.println("Processed page " + i);
+      }
+      document.close();
+
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
