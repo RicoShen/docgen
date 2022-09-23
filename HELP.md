@@ -25,4 +25,11 @@ https://blog.51cto.com/u_15067238/4155952
 ## Doc文档替换段落的text --完成
 ## Doc文档替换table的text --完成
 ## Doc文档替换页脚的text --完成
-## Doc文件转换
+## Doc文件转换PDF
+https://www.officexr.com/c/8878.html
+https://ofstack.com/Java/31662/java-uses-openoffice-to-convert-doc--docx-to-pdf-instance-code.html
+使用 OpenOffice 命令行完成工作:
+Runtime.getRuntime().exec("soffice --convert-to pdf -outdir . /path/some.doc");
+
+收费版：
+Spire.Doc
