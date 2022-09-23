@@ -31,6 +31,8 @@ https://ofstack.com/Java/31662/java-uses-openoffice-to-convert-doc--docx-to-pdf-
 https://github.com/yws179/word2pdf-tools
 使用 OpenOffice 命令行完成工作:
 Runtime.getRuntime().exec("soffice --convert-to pdf -outdir . /path/some.doc");
+使用 LibreOffice 命令行完成工作：
+https://help.libreoffice.org/latest/zh-CN/text/shared/guide/start_parameters.html
 
 收费版：
 Spire.Doc
