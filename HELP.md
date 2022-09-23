@@ -28,6 +28,7 @@ https://blog.51cto.com/u_15067238/4155952
 ## Doc文件转换PDF
 https://www.officexr.com/c/8878.html
 https://ofstack.com/Java/31662/java-uses-openoffice-to-convert-doc--docx-to-pdf-instance-code.html
+https://github.com/yws179/word2pdf-tools
 使用 OpenOffice 命令行完成工作:
 Runtime.getRuntime().exec("soffice --convert-to pdf -outdir . /path/some.doc");
 
