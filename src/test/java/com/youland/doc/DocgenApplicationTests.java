@@ -4,7 +4,6 @@ import com.deepoove.poi.XWPFTemplate;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfImportedPage;
 import com.lowagie.text.pdf.PdfReader;
@@ -15,19 +14,21 @@ import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlgraphics.util.MimeConstants;
+import org.jodconverter.core.DocumentConverter;
+import org.jodconverter.core.document.DefaultDocumentFormatRegistry;
+import org.jodconverter.core.document.DocumentFormat;
+import org.jodconverter.local.JodConverter;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
-import org.xml.sax.SAXException;
+import org.springframework.util.Assert;
 
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -38,6 +39,7 @@ class DocgenApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
     @Test
@@ -292,6 +294,28 @@ class DocgenApplicationTests {
             }
         }
 
+    }
+
+    @Test
+    void wordTopdf(){
+
+        String outputFormat = "pdf";
+
+        ClassPathResource inputFile = new ClassPathResource("NoteCA.docx");
+
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+
+            final DocumentFormat targetFormat =
+                    DefaultDocumentFormatRegistry.getFormatByExtension(outputFormat);
+            Assert.notNull(targetFormat, "targetFormat must not be null");
+            JodConverter.convert(inputFile.getInputStream()).to(baos).as(targetFormat).execute();
+
+            OutputStream outfile = new FileOutputStream("docs/NoteCA.pdf");
+            outfile.write(baos.toByteArray());
+
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
     }
 
 }
