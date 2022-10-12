@@ -9,4 +9,8 @@ public class Borrower extends PersonalFullInfo {
 
     private AddressInfo mailingAddress;
 
+    private String vestingClause;
+
+
+
 }

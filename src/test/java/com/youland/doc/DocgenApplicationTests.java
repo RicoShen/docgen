@@ -14,12 +14,9 @@ import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlgraphics.util.MimeConstants;
-import org.jodconverter.core.DocumentConverter;
 import org.jodconverter.core.document.DefaultDocumentFormatRegistry;
 import org.jodconverter.core.document.DocumentFormat;
-import org.jodconverter.local.JodConverter;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.Assert;
@@ -308,7 +305,9 @@ class DocgenApplicationTests {
             final DocumentFormat targetFormat =
                     DefaultDocumentFormatRegistry.getFormatByExtension(outputFormat);
             Assert.notNull(targetFormat, "targetFormat must not be null");
-            JodConverter.convert(inputFile.getInputStream()).to(baos).as(targetFormat).execute();
+
+            // NoteCA
+
 
             OutputStream outfile = new FileOutputStream("docs/NoteCA.pdf");
             outfile.write(baos.toByteArray());

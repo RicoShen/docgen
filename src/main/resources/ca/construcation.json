@@ -1,0 +1,18 @@
+{
+  "loan":{
+    "documentDate": "CLOSING_DOCUMENT_DATE",
+    "documentDate": "CLOSING_DOCUMENT_DATE"
+  },
+  "borrower":{
+
+  },
+  "services":{
+    "TitleCompany":{
+      "companyName": "TITLE_COMPANY_NAME",
+      "mailingAddress": {
+        "address": "",
+        ""
+      }
+    }
+  }
+}

@@ -36,7 +36,7 @@ dependencies {
     implementation 'fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.pdf-gae:2.0.3'
     implementation 'com.deepoove:poi-tl:1.12.0'
     implementation 'org.apache.xmlgraphics:fop:2.7'
-    implementation 'org.jodconverter:jodconverter-local-lo:4.4.4'
+    implementation 'org.jodconverter:jodconverter-remote:4.4.4'
     implementation 'org.jodconverter:jodconverter-spring-boot-starter:4.4.4'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
